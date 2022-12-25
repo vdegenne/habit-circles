@@ -6,7 +6,30 @@ import { TextField } from '@material/mwc-textfield';
 import { Select } from '@material/mwc-select';
 import { getIconId, iconExists, iconNameValidationPattern } from '../icons.js';
 
-const icons = ['smoking_rooms', 'fastfood', 'directions_run', 'directions_bike', 'wine_bar', 'favorite', 'theaters', 'school', 'sports_esports', 'shower', 'local_laundry_service', 'cleaning_services', 'smartphone', 'auto_stories', 'edit_square']
+const icons = [
+  'smoking_rooms',
+  'fastfood',
+  'cake',
+  'local_cafe',
+  'local_drink',
+  'wine_bar',
+  'directions_run',
+  'directions_bike',
+  'fitness_center',
+  'favorite',
+  'theaters',
+  'school',
+  'sports_esports',
+  'shower',
+  'wash',
+  'local_laundry_service',
+  'cleaning_services',
+  'smartphone',
+  'auto_stories',
+  'edit_square',
+  'assignment',
+  'photo_camera'
+]
 
 @customElement('habit-edit-dialog')
 export class HabitEditDialog extends LitElement {
@@ -28,25 +51,29 @@ export class HabitEditDialog extends LitElement {
   mwc-textfield, mwc-select {
     width: 100%;
   }
+  h3 {
+    margin-top: 32px;
+  }
   `
 
   render() {
     return html`
     <mwc-dialog heading="Habit">
 
-      <mwc-textfield label="name" dialogInitialFocus value=${this.habit.name} required></mwc-textfield>
+      <mwc-textfield label="name" outlined dialogInitialFocus value=${this.habit.name} required
+        style="margin-top:12px"></mwc-textfield>
 
-      <p>Frequency</p>
+      <h3>Frequency</h3>
       <div style="display:flex">
         <mwc-textfield type="number" name="length" min="1" max="999" value=${this.habit.length}></mwc-textfield>
-        <mwc-select name="unit" value="m" @closed=${(e: CustomEvent) => e.stopPropagation()}>
+        <mwc-select name="unit" value="${this.habit.unit}" @closed=${(e: CustomEvent) => e.stopPropagation()}>
           <mwc-list-item value="d">days</mwc-list-item>
           <mwc-list-item value="h">hours</mwc-list-item>
           <mwc-list-item value="m">minutes</mwc-list-item>
         </mwc-select>
       </div>
 
-      <p>Icon</p>
+      <h3>Icon</h3>
       <div>
         ${icons.map(icon => {
           return html`<mwc-icon-button icon=${icon} @click=${()=>{this.changeIconValue(icon)}}></mwc-icon-button>`
@@ -54,13 +81,13 @@ export class HabitEditDialog extends LitElement {
       </div>
       <mwc-textfield
         name=icon
-        value=search
+        value=${this.habit.iconName}
         pattern="${iconNameValidationPattern}"
         validationMessage="This icon doesn't exist"
         @input=${(e: CustomEvent) => {this.validateIconValue()}} required></mwc-textfield>
 
-      <p>Color</p>
-      <mwc-textfield type="color" name=color></mwc-textfield>
+      <h3>Color</h3>
+      <mwc-textfield type="color" name=color outlined></mwc-textfield>
 
       <mwc-button outlined slot=secondaryAction dialogAction=close>close</mwc-button>
       <mwc-button unelevated slot=primaryAction dialogAction="submit">add</mwc-button>

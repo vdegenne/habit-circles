@@ -33,7 +33,7 @@ export class Habit {
     return this.touch == 0
   }
 
-  isPermitted () {
+  get isAllowed () {
     return this.getAbstinenceTime() >= ms(this.frequency)
   }
 

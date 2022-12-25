@@ -33957,7 +33957,7 @@ class Habit {
     get isNew() {
         return this.touch == 0;
     }
-    isPermitted() {
+    get isAllowed() {
         return this.getAbstinenceTime() >= ms(this.frequency);
     }
     async destroy() {
@@ -34037,7 +34037,30 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
-const icons = ['smoking_rooms', 'fastfood', 'directions_run', 'directions_bike', 'wine_bar', 'favorite', 'theaters', 'school', 'sports_esports', 'shower', 'local_laundry_service', 'cleaning_services', 'smartphone', 'auto_stories', 'edit_square'];
+const icons = [
+    'smoking_rooms',
+    'fastfood',
+    'cake',
+    'local_cafe',
+    'local_drink',
+    'wine_bar',
+    'directions_run',
+    'directions_bike',
+    'fitness_center',
+    'favorite',
+    'theaters',
+    'school',
+    'sports_esports',
+    'shower',
+    'wash',
+    'local_laundry_service',
+    'cleaning_services',
+    'smartphone',
+    'auto_stories',
+    'edit_square',
+    'assignment',
+    'photo_camera'
+];
 let HabitEditDialog = class HabitEditDialog extends s$3 {
     constructor(hostElement, habit) {
         super();
@@ -34048,19 +34071,20 @@ let HabitEditDialog = class HabitEditDialog extends s$3 {
         return y$1 `
     <mwc-dialog heading="Habit">
 
-      <mwc-textfield label="name" dialogInitialFocus value=${this.habit.name} required></mwc-textfield>
+      <mwc-textfield label="name" outlined dialogInitialFocus value=${this.habit.name} required
+        style="margin-top:12px"></mwc-textfield>
 
-      <p>Frequency</p>
+      <h3>Frequency</h3>
       <div style="display:flex">
         <mwc-textfield type="number" name="length" min="1" max="999" value=${this.habit.length}></mwc-textfield>
-        <mwc-select name="unit" value="m" @closed=${(e) => e.stopPropagation()}>
+        <mwc-select name="unit" value="${this.habit.unit}" @closed=${(e) => e.stopPropagation()}>
           <mwc-list-item value="d">days</mwc-list-item>
           <mwc-list-item value="h">hours</mwc-list-item>
           <mwc-list-item value="m">minutes</mwc-list-item>
         </mwc-select>
       </div>
 
-      <p>Icon</p>
+      <h3>Icon</h3>
       <div>
         ${icons.map(icon => {
             return y$1 `<mwc-icon-button icon=${icon} @click=${() => { this.changeIconValue(icon); }}></mwc-icon-button>`;
@@ -34068,13 +34092,13 @@ let HabitEditDialog = class HabitEditDialog extends s$3 {
       </div>
       <mwc-textfield
         name=icon
-        value=search
+        value=${this.habit.iconName}
         pattern="${iconNameValidationPattern}"
         validationMessage="This icon doesn't exist"
         @input=${(e) => { this.validateIconValue(); }} required></mwc-textfield>
 
-      <p>Color</p>
-      <mwc-textfield type="color" name=color></mwc-textfield>
+      <h3>Color</h3>
+      <mwc-textfield type="color" name=color outlined></mwc-textfield>
 
       <mwc-button outlined slot=secondaryAction dialogAction=close>close</mwc-button>
       <mwc-button unelevated slot=primaryAction dialogAction="submit">add</mwc-button>
@@ -34119,6 +34143,9 @@ HabitEditDialog.styles = i$5 `
   mwc-textfield, mwc-select {
     width: 100%;
   }
+  h3 {
+    margin-top: 32px;
+  }
   `;
 __decorate([
     i$2('mwc-dialog')
@@ -34138,6 +34165,16 @@ __decorate([
 HabitEditDialog = __decorate([
     e$6('habit-edit-dialog')
 ], HabitEditDialog);
+
+const sharedStyles = i$5 `
+[flex] {
+  display: flex;
+}
+[flexcenter] {
+  display: flex;
+  align-items: center;
+}
+`;
 
 // import { connect, watch } from 'lit-redux-watch'
 let AppContainer = class AppContainer extends connect(store)(s$3) {
@@ -34159,7 +34196,7 @@ let AppContainer = class AppContainer extends connect(store)(s$3) {
         var _a;
         return y$1 `
     <header>
-      <div></div>
+      <mwc-button disabled icon=join_full><span style="text-transform:none !important">HabitCircles</span></mwc-button>
       ${this.user ? y$1 `
       <div style="display:flex;align-items:center">
         <mwc-button @click=${() => { this.onAddHabitButtonClick(); }} icon="add" outlined>new habit</mwc-button>
@@ -34187,19 +34224,21 @@ let AppContainer = class AppContainer extends connect(store)(s$3) {
         }
     }
 };
-AppContainer.styles = i$5 `
+AppContainer.styles = [sharedStyles, i$5 `
   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-left: 6px;
   }
   .page {
     display: none;
+    margin-top: 42px;
   }
   .page[active] {
     display: block;
   }
-  `;
+  `];
 __decorate([
     t$1()
 ], AppContainer.prototype, "page", void 0);
@@ -34238,16 +34277,16 @@ let HabitsView = class HabitsView extends ViewElement {
         if (this.habits == undefined) {
             return b$1;
         }
-        const permitteds = this.habits.filter(habit => habit.isPermitted());
-        const prohibiteds = this.habits.filter(habit => !habit.isPermitted());
+        const permitteds = this.habits.filter(habit => habit.isAllowed);
+        const prohibiteds = this.habits.filter(habit => !habit.isAllowed);
         return y$1 `
-    <p style="margin-bottom:6px;color:#979797">Allowed</p>
-    <div style="margin:0px;border-radius:6px;background-color:#e0e0e0;min-height:200px;display:flex;align-items: flex-start;padding: 12px;">
+    <p style="margin-bottom:12zpx;color:#979797;display:flex;align-items:center"><mwc-icon style="margin-right:4px">thumb_up</mwc-icon>Allowed</p>
+    <div class="rack" style="border-left-color:#66bb6a;${permitteds.length == 0 ? 'justify-content:center;align-items:center;' : ''}">
+    ${permitteds.length == 0 ? y$1 `<p style="color:#9e9e9e;">No allowed habits yet.</p>` : b$1}
     ${permitteds.map(habit => {
             return y$1 `
       <mwc-icon-button
-        icon=${getIconName(habit.icon)}
-        title="${ms(Math.abs(habit.getRemainingTime()))} ago"
+        icon=${habit.iconName}
         @click=${() => { this.onHabitIconClick(habit); }}
         style="color:${habit.color}"
       ></mwc-icon-button>
@@ -34255,11 +34294,15 @@ let HabitsView = class HabitsView extends ViewElement {
         })}
     </div>
 
-    <p style="margin-bottom:6px;color:#979797">Forbidden</p>
-    <div style="margin:0px;border-radius:6px;background-color:#b71c1c;min-height:200px;display:flex;align-items: flex-start;padding: 12px;">
+    <p style="margin-bottom:6px;color:#979797;display:flex;align-items:center"><mwc-icon style="margin-right:4px">block</mwc-icon>Forbidden</p>
+    <div class="rack" style="border-left-color:#e57373">
     ${prohibiteds.map(habit => {
             return y$1 `
-      <mwc-icon-button icon=${getIconName(habit.icon)} title="in ${ms(habit.getRemainingTime())}" style="color:${habit.color}"></mwc-icon-button>
+      <mwc-icon-button
+        icon=${habit.iconName}
+        @click=${() => { this.onHabitIconClick(habit); }}
+        style="color:${habit.color}"
+      ></mwc-icon-button>
       `;
         })}
     </div>
@@ -34267,15 +34310,18 @@ let HabitsView = class HabitsView extends ViewElement {
     }
     async onHabitIconClick(habit) {
         window.snackbar.stacked = true;
-        window.toast(`${habit.name} (${habit.isNew ? 'new' : `allowed from ${ms(habit.getProcrastinationTime())} ago`})`, -1, y$1 `
-    <mwc-button unelevated slot="action" style="--mdc-theme-primary:#fdd835;--mdc-theme-on-primary:black"
-      @click=${(e) => {
+        window.toast(`${habit.name} (every ${habit.frequency})`, -1, y$1 `
+    <div slot="action" style="width:320px;display:flex;align-items:center;justify-content:space-between">
+      <mwc-button raised slot="action" style="--mdc-theme-primary:${habit.isAllowed ? '#81c784' : '#f44336'};color:${habit.isAllowed ? 'black' : 'white'}--mdc-theme-on-primary:black"
+        icon="${habit.isAllowed ? '' : 'block'}"
+        @click=${(e) => {
             e.stopPropagation();
             habit.updateTouchTime();
-        }}>I DID</mwc-button>
-    <mwc-icon-button slot="action" icon="edit" style="color:white"></mwc-icon-button>
-    <mwc-icon-button slot="action" icon="delete" style="color:white"
-      @click=${async (e) => {
+        }}>I DID IT</mwc-button>
+      <div>
+        <mwc-icon-button slot="action" icon="edit" style="color:white"></mwc-icon-button>
+        <mwc-icon-button slot="action" icon="delete" style="color:white"
+          @click=${async (e) => {
             e.stopPropagation(); // prevent the snackbar to close
             if (confirm('Are you sure you want to delete this habit?')) {
                 await habit.destroy();
@@ -34283,6 +34329,10 @@ let HabitsView = class HabitsView extends ViewElement {
                 window.toast('deleted', 3000);
             }
         }}></mwc-icon-button>
+        </div>
+
+        <mwc-icon-button icon=close @click=${(e) => { e.stopPropagation(); window.toast('', 0); }}></mwc-icon-button>
+      </div>
     `);
     }
     firstUpdated(_changedProperties) {
@@ -34292,6 +34342,16 @@ let HabitsView = class HabitsView extends ViewElement {
 HabitsView.styles = i$5 `
   :host {
     margin: 24px;
+  }
+  .rack {
+    display: flex;
+    align-items: flex-start;
+    margin: 0 0 24px 0;
+    border-radius: 6px;
+    background-color: #e0e0e0;
+    min-height: 200px;
+    padding: 12px;
+    border-left: 7px solid #bdbdbd;
   }
   mwc-icon-button {
     margin:4px;

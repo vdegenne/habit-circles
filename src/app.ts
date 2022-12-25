@@ -7,6 +7,7 @@ import { signOut } from 'firebase/auth'
 import { auth } from './firebase.js'
 import { HabitEditDialog } from './dialogs/habit-edit-dialog.js'
 import { Firestore } from './firestore.js'
+import { sharedStyles } from './styles/sharedStyles.js'
 // import { connect, watch } from 'lit-redux-watch'
 
 
@@ -34,24 +35,26 @@ export class AppContainer extends connect(store)(LitElement) {
   }
 
 
-  static styles = css`
+  static styles = [sharedStyles, css`
   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-left: 6px;
   }
   .page {
     display: none;
+    margin-top: 42px;
   }
   .page[active] {
     display: block;
   }
-  `
+  `]
 
   render () {
     return html`
     <header>
-      <div></div>
+      <mwc-button disabled icon=join_full><span style="text-transform:none !important">HabitCircles</span></mwc-button>
       ${this.user ? html`
       <div style="display:flex;align-items:center">
         <mwc-button @click=${()=>{this.onAddHabitButtonClick()}} icon="add" outlined>new habit</mwc-button>

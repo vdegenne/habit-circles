@@ -43,7 +43,6 @@ export class AppContainer extends connect(store)(LitElement) {
   header {
     display: flex;
     justify-content: space-between;
-    /* align-items: center; */
     /* padding-left: 12px; */
   }
   .page {

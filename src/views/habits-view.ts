@@ -23,6 +23,7 @@ export class HabitsView extends ViewElement {
   .rack {
     display: flex;
     align-items: flex-start;
+    align-content: flex-start;
     flex-wrap: wrap;
     margin: 0 0 32px -12px;
     border-radius: 6px;

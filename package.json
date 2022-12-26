@@ -1,5 +1,5 @@
 {
-  "name": "habit-circles",
+  "name": "imonloop",
   "type": "module",
   "devDependencies": {
     "@material/mwc-button": "^0.27.0",

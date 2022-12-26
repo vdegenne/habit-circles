@@ -60,7 +60,7 @@ export class HabitEditDialog extends LitElement {
     return html`
     <mwc-dialog heading="Habit">
 
-      <mwc-textfield label="name" outlined dialogInitialFocus value=${this.habit.name} required
+      <mwc-textfield label="name" outlined value=${this.habit.name} required
         style="margin-top:12px"></mwc-textfield>
 
       <h3>Frequency</h3>
@@ -87,7 +87,7 @@ export class HabitEditDialog extends LitElement {
         @input=${(e: CustomEvent) => {this.validateIconValue()}} required></mwc-textfield>
 
       <h3>Color</h3>
-      <mwc-textfield type="color" name=color outlined></mwc-textfield>
+      <mwc-textfield type="color" name=color outlined value="#000"></mwc-textfield>
 
       <mwc-button outlined slot=secondaryAction dialogAction=close>close</mwc-button>
       <mwc-button unelevated slot=primaryAction dialogAction="submit">add</mwc-button>

@@ -2,17 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>habit-circles</title>
+    <title>Im on loop</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
+
+    <link rel="icon" href="./img/android-chrome-192x192.png">
+
+    <link rel="manifest" href="./manifest.json" />
   </head>
   <body>
     <style>
       body {
         margin: 0;
         font-family: Roboto;
-        color: #979797;
+        color: #616161;
         --mdc-theme-primary: black;
       }
     </style>
@@ -22,5 +26,11 @@
     <mwc-snackbar id=snackbar leading quick></mwc-snackbar>
 
     <script type=module src="./app.js"></script>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js');
+      }
+    </script>
   </body>
 </html>

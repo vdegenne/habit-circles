@@ -2,10 +2,13 @@ import './redux/store.js'
 import './app.js'
 import './dialogs/habit-edit-dialog.js'
 import { AppContainer } from './app.js';
+
 // views
 import './views/habits-view.js'
 import './views/login-view.js'
 import './firebase.js'
+// dialogs
+import './dialogs/habit-dialog.js'
 
 import '@material/mwc-snackbar'
 import '@material/mwc-button'

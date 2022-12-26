@@ -5,6 +5,7 @@ import { Habit } from '../objects/Habit.js';
 import { RootState } from '../redux/store.js';
 import { ViewElement } from './view-element.js';
 import ms from 'ms';
+import { green, red } from '../constants.js';
 
 @customElement('habits-view')
 export class HabitsView extends ViewElement {
@@ -22,9 +23,9 @@ export class HabitsView extends ViewElement {
   .rack {
     display: flex;
     align-items: flex-start;
-    margin: 0 0 24px 0;
+    margin: 0 0 32px -12px;
     border-radius: 6px;
-    background-color: #e0e0e0;
+    background-color: #f5f5f5;
     min-height: 200px;
     padding: 12px;
     border-left: 7px solid #bdbdbd;
@@ -41,9 +42,9 @@ export class HabitsView extends ViewElement {
     const prohibiteds = this.habits.filter(habit => !habit.isAllowed)
 
     return html`
-    <p style="margin-bottom:12zpx;color:#979797;display:flex;align-items:center"><mwc-icon style="margin-right:4px">thumb_up</mwc-icon>Allowed</p>
-    <div class="rack" style="border-left-color:#66bb6a;${permitteds.length == 0 ? 'justify-content:center;align-items:center;' : ''}">
-    ${permitteds.length == 0 ? html`<p style="color:#9e9e9e;">No allowed habits yet.</p>` : nothing}
+    <p style="margin-bottom:10px;display:flex;align-items:center"><mwc-icon style="margin-right:4px">thumb_up</mwc-icon>Todo</p>
+    <div class="rack" style="border-left-color:grey;${permitteds.length == 0 ? 'justify-content:center;align-items:center;' : ''}">
+    ${permitteds.length == 0 ? html`<p style="color:#9e9e9e;">No habits allowed yet.</p>` : nothing}
     ${permitteds.map(habit => {
       return html`
       <mwc-icon-button
@@ -55,14 +56,14 @@ export class HabitsView extends ViewElement {
     })}
     </div>
 
-    <p style="margin-bottom:6px;color:#979797;display:flex;align-items:center"><mwc-icon style="margin-right:4px">block</mwc-icon>Forbidden</p>
-    <div class="rack" style="border-left-color:#e57373">
+    <p style="margin-bottom:10px;display:flex;align-items:center"><mwc-icon style="margin-right:4px">block</mwc-icon>Forbidden</p>
+    <div class="rack" style="border-left-color:${red}">
     ${prohibiteds.map(habit => {
       return html`
       <mwc-icon-button
         icon=${habit.iconName!}
         @click=${()=>{this.onHabitIconClick(habit)}}
-        style="color:${habit.color}"
+        style="color:${habit.color};opacity:0.4"
       ></mwc-icon-button>
       `
     })}
@@ -71,6 +72,10 @@ export class HabitsView extends ViewElement {
   }
 
   async onHabitIconClick(habit: Habit) {
+
+    window.app.habitDialog.open(habit)
+
+    return
     window.snackbar.stacked = true
     window.toast(`${habit.name} (every ${habit.frequency})`, -1, html`
     <div slot="action" style="width:320px;display:flex;align-items:center;justify-content:space-between">
@@ -99,6 +104,6 @@ export class HabitsView extends ViewElement {
   }
 
   protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-    setInterval(() => this.requestUpdate(), 5000)
+    setInterval(() => this.requestUpdate(), 1000)
   }
 }

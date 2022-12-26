@@ -77,6 +77,8 @@ export class AppContainer extends connect(store)(LitElement) {
       <login-view class=page ?active=${this.page == 'login'}></login-view>
     </div>
 
+    <mwc-fab icon="add"></mwc-fab>
+
     <habit-dialog></habit-dialog>
     `
   }

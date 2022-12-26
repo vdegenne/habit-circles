@@ -43,7 +43,7 @@ export class AppContainer extends connect(store)(LitElement) {
   header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    /* align-items: center; */
     /* padding-left: 12px; */
   }
   .page {
@@ -60,8 +60,8 @@ export class AppContainer extends connect(store)(LitElement) {
     <header>
       <!-- <mwc-button disabled icon=join_full><span style="text-transform:none !important">HabitCircles</span></mwc-button> -->
       <div flexcenter style="align-items:center">
-        <img src="./img/android-chrome-192x192.png" width=22 style="margin:8px">
-        <span style=";font-size:1.3em;color:#26c2de">${appName}</span>
+        <img src="./img/android-chrome-192x192.png" width=22 style="margin:15px;filter:grayscale(1)">
+        <!-- <span style=";font-size:1.3em;color:grey">${appName}</span> -->
       </div>
       ${this.user ? html`
       <div style="display:flex;align-items:center">

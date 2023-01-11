@@ -4,6 +4,7 @@ import json from '@rollup/plugin-json'
 import terser from '@rollup/plugin-terser'
 import commonjs from '@rollup/plugin-commonjs'
 import injectProcessEnv from 'rollup-plugin-inject-process-env'
+import css from 'rollup-plugin-import-css'
 
 export default {
   input: 'src/entry.ts',
@@ -13,6 +14,7 @@ export default {
     resolve({}),
     commonjs(),
     json(),
+    css(),
     injectProcessEnv(),
     process.env.minify ? terser() : {},
   ]

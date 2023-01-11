@@ -17,9 +17,9 @@ import '@material/mwc-dialog'
 import '@material/mwc-textfield'
 import '@material/mwc-select'
 import '@material/mwc-fab'
+import '@material/mwc-circular-progress'
 import { html, render, TemplateResult } from 'lit';
 import { Snackbar } from '@material/mwc-snackbar';
-// import '@material/mwc-checkbox'
 
 
 declare global {
@@ -29,7 +29,6 @@ declare global {
     toast: (label: string, timeoutMs?: number, content?: TemplateResult) => void;
   }
 }
-
 
 let toastTimeout: NodeJS.Timeout|undefined
 window.toast = async function (label: string, timeoutMs = 4000, content?: TemplateResult) {

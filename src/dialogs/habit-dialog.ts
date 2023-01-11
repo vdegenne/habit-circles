@@ -3,11 +3,10 @@ import { html, LitElement, nothing, PropertyValueMap } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import ms from 'ms';
 import { connect } from 'pwa-helpers';
-import { green, red, strictRed } from '../constants.js';
+import { green, strictRed } from '../constants.js';
 import { Habit } from '../objects/Habit.js';
 import { RootState, store } from '../redux/store.js';
 import { sharedStyles } from '../styles/sharedStyles.js';
-import { sleep } from '../utils.js';
 
 
 @customElement('habit-dialog')

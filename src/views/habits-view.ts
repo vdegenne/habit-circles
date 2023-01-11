@@ -1,11 +1,12 @@
-import { css, html, nothing, PropertyValueMap } from 'lit';
+import { html, nothing, PropertyValueMap, unsafeCSS } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { getIconName } from '../icons.js';
 import { Habit } from '../objects/Habit.js';
 import { RootState } from '../redux/store.js';
 import { ViewElement } from './view-element.js';
+import { red } from '../constants.js';
+import styles from '../styles/HabitsViewStyles.css';
+// import styleSheet from '../styles/HabitsViewStyles.css' assert { type: "css" };
 import ms from 'ms';
-import { green, red } from '../constants.js';
 
 @customElement('habits-view')
 export class HabitsView extends ViewElement {
@@ -16,26 +17,7 @@ export class HabitsView extends ViewElement {
     this.habits = state.data.habits
   }
 
-  static styles = css`
-  :host {
-    margin: 24px;
-  }
-  .rack {
-    display: flex;
-    align-items: flex-start;
-    align-content: flex-start;
-    flex-wrap: wrap;
-    margin: 0 0 32px -12px;
-    border-radius: 6px;
-    background-color: #f5f5f5;
-    min-height: 200px;
-    padding: 12px;
-    border-left: 7px solid #bdbdbd;
-  }
-  mwc-icon-button {
-    margin:4px;
-  }
-  `
+  static styles = [unsafeCSS(styles)]
 
   render () {
     if (this.habits == undefined) { return nothing }
@@ -61,12 +43,15 @@ export class HabitsView extends ViewElement {
     <p style="margin-bottom:10px;display:flex;align-items:center"><mwc-icon style="margin-right:4px">block</mwc-icon>Forbidden</p>
     <div class="rack" style="border-left-color:${red}">
     ${prohibiteds.map(habit => {
+      const progress = habit.getAbstinenceTime() / ms(habit.frequency)
       return html`
       <mwc-icon-button
         icon=${habit.iconName!}
         @click=${()=>{this.onHabitIconClick(habit)}}
-        style="color:${habit.color};opacity:0.4"
-      ></mwc-icon-button>
+        style="color:${habit.color};opacity:0.3"
+      >
+        <mwc-circular-progress progress=${progress} style="position:absolute;top:0;left:0;--mdc-theme-primary:${habit.color}"></mwc-circular-progress>
+      </mwc-icon-button>
       `
     })}
     </div>

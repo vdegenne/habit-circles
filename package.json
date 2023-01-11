@@ -4,6 +4,7 @@
   "devDependencies": {
     "@material/mwc-button": "^0.27.0",
     "@material/mwc-checkbox": "^0.27.0",
+    "@material/mwc-circular-progress": "^0.27.0",
     "@material/mwc-dialog": "^0.27.0",
     "@material/mwc-fab": "^0.27.0",
     "@material/mwc-icon-button": "^0.27.0",
@@ -26,6 +27,7 @@
     "ms": "^2.1.3",
     "pwa-helpers": "^0.9.1",
     "rollup": "^3.8.1",
+    "rollup-plugin-import-css": "^3.1.0",
     "rollup-plugin-inject-process-env": "^1.3.1",
     "typescript": "^4.9.4"
   },

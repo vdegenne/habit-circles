@@ -59,12 +59,12 @@ export class AppContainer extends connect(store)(LitElement) {
     <header>
       <!-- <mwc-button disabled icon=join_full><span style="text-transform:none !important">HabitCircles</span></mwc-button> -->
       <div flexcenter style="align-items:center">
-        <img src="./img/android-chrome-192x192.png" width=22 style="margin:15px;filter:grayscale(1)">
+        <!-- <img src="./img/android-chrome-192x192.png" width=22 style="margin:15px;filter:grayscale(1)"> -->
         <!-- <span style=";font-size:1.3em;color:grey">${appName}</span> -->
       </div>
       ${this.user ? html`
       <div style="display:flex;align-items:center">
-        <!-- <mwc-button @click=${()=>{this.onAddHabitButtonClick()}} icon="add" outlined>new habit</mwc-button> -->
+        <mwc-button @click=${()=>{this.onAddHabitButtonClick()}} icon="add" outlined>new habit</mwc-button>
         <mwc-icon-button @click=${()=>{signOut(auth)}}>
           <img src="${this.user?.photoURL}" style="border-radius:50%">
         </mwc-icon-button>
@@ -77,8 +77,8 @@ export class AppContainer extends connect(store)(LitElement) {
       <login-view class=page ?active=${this.page == 'login'}></login-view>
     </div>
 
-    <mwc-fab icon="add" style="position:fixed;right:24px;bottom:24px"
-        @click=${()=>{this.onAddHabitButtonClick()}}></mwc-fab>
+    <!-- <mwc-fab icon="add" style="position:fixed;right:24px;bottom:24px"
+        @click=${()=>{this.onAddHabitButtonClick()}}></mwc-fab> -->
 
     <habit-dialog></habit-dialog>
     `
